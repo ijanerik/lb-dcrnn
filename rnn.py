@@ -15,7 +15,7 @@ from keras.layers import Convolution2D, MaxPooling2D
 from keras.utils import np_utils
 from keras import backend as K
 
-from load_images import readIn
+from load_rnn import readIn
 from encode_rnn import encodeHouseNumber
 
 batch_size = 256
@@ -26,7 +26,7 @@ maxLen = 7
 img_rows, img_cols = 30, 60
 
 # the data, shuffled and split between train and test sets
-(X_train, y_train, X_test, y_test, uLabels) = readIn('images')
+(X_train, y_train, X_test, y_test) = readIn('images')
 
 if K.image_dim_ordering() == 'th':
     X_train = X_train.reshape(X_train.shape[0], 1, img_rows, img_cols)
@@ -45,8 +45,8 @@ print(X_train.shape[0], 'train samples')
 print(X_test.shape[0], 'test samples')
 
 # convert class vectors to binary class matrices
-Y_train = encodeHouseNumber(y_train, uLabels, maxLen)
-Y_test = encodeHouseNumber(y_test, uLabels, maxLen)
+Y_train = encodeHouseNumber(y_train, maxLen)
+Y_test = encodeHouseNumber(y_test, maxLen)
 
 model = Sequential()
 

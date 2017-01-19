@@ -2,7 +2,7 @@ from PIL import Image, ImageFont, ImageDraw
 import glob, random, math, time
 from collections import OrderedDict
 
-differendAdresses = 12000
+differendAdresses = 120
 imagesPerAdress = 25
 
 ## Write to roman
