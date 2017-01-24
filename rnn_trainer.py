@@ -73,10 +73,10 @@ model.fit(X_train, Y_train, batch_size=batch_size, nb_epoch=nb_epoch,
 
 # Create name
 import time
-name = "model_"+time.strftime("%d/%m/%Y_%I:%M:%S")
+name = "model_"+time.strftime("%d-%m-%Y_%I:%M:%S")
 
 # Save model
-file = open("trained/"+name+".json", "w")
+file = open("trained/"+name+".json", "w+")
 file.write(model.to_json())
 file.close()
 

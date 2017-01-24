@@ -2,8 +2,8 @@ from PIL import Image, ImageFont, ImageDraw
 import glob, random, math, time
 from collections import OrderedDict
 
-differendAdresses = 100000
-imagesPerAdress = 20
+differendAdresses = 100
+imagesPerAdress = 10
 
 ## Write to roman
 def write_roman(num):
