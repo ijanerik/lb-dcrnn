@@ -19,7 +19,7 @@ from load_rnn import readIn
 from encode_rnn import encodeHouseNumber, decodeHouseNumber
 
 batch_size = 256
-nb_epoch = 40
+nb_epoch = 5
 maxLen = 7
 
 # input image dimensions
@@ -50,11 +50,15 @@ Y_test = encodeHouseNumber(y_test, maxLen)
 
 model = Sequential()
 
-model.add(Convolution2D(32, 3, 3,
+model.add(Convolution2D(16, 3, 3,
                         border_mode='valid',
                         input_shape=input_shape,
                         activation='relu'))
-model.add(Convolution2D(16, 2, 2, activation='relu'))
+model.add(Convolution2D(32, 2, 2, activation='relu'))
+model.add(Dropout(0.25))
+
+model.add(Convolution2D(32, 3, 3, activation='relu'))
+model.add(Convolution2D(64, 2, 2, activation='relu'))
 model.add(Dropout(0.25))
 
 model.add(Flatten())
@@ -63,8 +67,8 @@ model.add(Dropout(0.5))
 
 # RNN
 model.add(RepeatVector(maxLen))
-model.add(GRU(38, return_sequences=True))
-model.add(Activation('softmax'))
+model.add(GRU(128, return_sequences=True, activation='relu'))
+model.add(TimeDistributed(Dense(38, activation='softmax')))
 
 model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
 
