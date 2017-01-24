@@ -17,11 +17,13 @@ def readIn(path):
     labels = []
     i = 0
     for img in glob.glob(path+'/*'):
+
         i = i + 1
         if(i % 10000 == 0):
             print("Loaded images: "+str(i))
-        images.append(np.array(Image.open(img)))
-        labels.append(img.split('.')[0].split('_')[1])
+        try:
+            images.append(np.array(Image.open(img)))
+            labels.append(img.split('.')[0].split('_')[1])
 
     uLabels = f3(labels)
 
@@ -32,7 +34,7 @@ def readIn(path):
     X = np.array(images)
     y = np.array(iLabels)
 
-    trainSize = int(math.floor(len(X) * 0.9))
+    trainSize = int(math.floor(len(X) * 0.95))
     permutation = np.random.permutation(y.shape[0])
     (per_train, per_test) = (permutation[: trainSize], permutation[trainSize :])
     (X_train, X_test) = (X[per_train], X[per_test])

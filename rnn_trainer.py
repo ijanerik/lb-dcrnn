@@ -19,7 +19,7 @@ from load_rnn import readIn
 from encode_rnn import encodeHouseNumber, decodeHouseNumber
 
 batch_size = 256
-nb_epoch = 2
+nb_epoch = 40
 maxLen = 7
 
 # input image dimensions
