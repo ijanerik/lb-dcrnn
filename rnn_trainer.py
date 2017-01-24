@@ -10,7 +10,7 @@ np.random.seed(1337)  # for reproducibility
 
 from keras.datasets import mnist
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten, GRU, RepeatVector
+from keras.layers import Dense, Dropout, Activation, Flatten, GRU, RepeatVector, TimeDistributed
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.utils import np_utils
 from keras import backend as K
