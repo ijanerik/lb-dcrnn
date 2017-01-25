@@ -2,3 +2,4 @@ images/*
 .DS_Store
 *.pyc
 trained/*
+test_images/*
