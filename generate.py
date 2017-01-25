@@ -2,8 +2,8 @@ from PIL import Image, ImageFont, ImageDraw
 import glob, random, math, time
 from collections import OrderedDict
 
-differendAdresses = 100
-imagesPerAdress = 10
+differendAdresses = 100000
+imagesPerAdress = 1
 
 ## Write to roman
 def write_roman(num):
@@ -67,7 +67,7 @@ def generateBetweenNumber(category):
         return random.choice(['-', ' ', '  ', '/', ' / '])
 
 def makeTextImage(name, text, font, loc, size, color):
-    im = Image.new("I", size, "white")
+    im = Image.new("L", size, "white")
     draw = ImageDraw.Draw(im)
     draw.text(loc, text, font=font, fill=color)
     im.save('images/'+name+'.gif')

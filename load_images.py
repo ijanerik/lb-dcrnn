@@ -11,6 +11,9 @@ def f3(seq):
        keys[e] = 1
    return keys.keys()
 
+def scale256(X):
+    return (X / 255. -.5) * 3.
+
 def readIn(path):
     # Read in labels
     images = []
@@ -34,7 +37,7 @@ def readIn(path):
     X = np.array(images)
     y = np.array(iLabels)
 
-    trainSize = int(math.floor(len(X) * 0.95))
+    trainSize = int(math.floor(len(X) * 0.85))
     permutation = np.random.permutation(y.shape[0])
     (per_train, per_test) = (permutation[: trainSize], permutation[trainSize :])
     (X_train, X_test) = (X[per_train], X[per_test])
