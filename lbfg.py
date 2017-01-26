@@ -98,7 +98,7 @@ def generate_data(adresses, times, path = False, size = (60,30)):
         for j in range(times):
             #Display each 10000 images
             c = c + 1
-            if(c % 10000 == 0):
+            if(c % 1000 == 0):
                 print('Generated '+str(c)+' images')
 
             # Generate properties of image
