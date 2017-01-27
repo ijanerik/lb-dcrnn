@@ -64,6 +64,7 @@ def generate_data(adresses, times, path = False, size = (60,30)):
     return lbfg.generate_data(adresses, times, path, size)
 
 
+
 ############################################################
 ## All the functions for encoding and decoding the labels ##
 ############################################################

@@ -64,7 +64,7 @@ def generateBetweenNumber(category):
     if(category == 0):
         return ''
     else:
-        return random.choice(['-', ' ', '  ', '/', ' / '])
+        return random.choice(['-', ' ', '  ', '/', ' / ', '\\'])
 
 def makeTextImage(text, font, loc, size, color):
     im = Image.new("L", size, "white")
