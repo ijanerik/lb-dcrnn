@@ -3,13 +3,28 @@ from keras.models import model_from_json
 from keras import backend as K
 from PIL import Image
 import numpy as np
-import math, globtime, random
+import math, glob, time, random
 
 import lbfg
 
 ########################################
 ## All the data for importing images! ##
 ########################################
+
+def f3(seq):
+   # Not order preserving
+   keys = {}
+   for e in seq:
+       keys[e] = 1
+   return list(keys.keys())
+
+def labelToInt(labels):
+    uLabels = f3(labels)
+    iLabels = []
+    for label in labels:
+      iLabels.append(uLabels.index(label))
+    return iLabels
+
 def get_input_shape(cols = 60, rows = 30):
     if K.image_dim_ordering() == 'th':
         input_shape = (1, rows, cols)
@@ -34,28 +49,33 @@ def load_images(path):
     Y = np.array(labels)
     return (X, Y)
 
-def normalize_data((X, Y), format, maxLen = 7, normalize = True):
+def normalize_data((X, Y), format, rnn=True, maxLen = 7, normalize = True):
     # Randomize input
     permutation = np.random.permutation(Y.shape[0])
     X = X[permutation]
-
+    Y = Y[permutation]
     # Normalize
     if(normalize == True):
-        X = (X / 255 - 0.5) * 6
+        X = (X / 255. - 0.5) * 6.
 
     # Normalize
     X = X.reshape(X.shape[0], format[0], format[1], format[2])
     X = X.astype('float32')
 
     # Encode Y
-    Y = encodeHouseNumbers(Y[permutation], maxLen)
+    if rnn == True:
+        Y = encodeHouseNumbers(Y, maxLen)
+
     return (X, Y)
 
-def split_data((X, Y), percentage = 0.8):
+def split_data((X, Y), percentage = 0.6):
     trainSize = int(math.floor(len(X) * percentage))
-    (X_train, X_test) = (X[: trainSize], X[trainSize :])
-    (Y_train, Y_test) = (Y[: trainSize], Y[trainSize :])
-    return [(X_train, Y_train), (X_test, Y_test)]
+    validationTest = len(X) - trainSize
+    (X_train, X_valTest) = (X[: trainSize], X[trainSize: ])
+    (Y_train, Y_valTest) = (Y[: trainSize], Y[trainSize: ])
+    (X_validate, X_test) = (X_valTest[: X_valTest.shape[0]/2], X_valTest[X_valTest.shape[0]/2: ])
+    (Y_validate, Y_test) = (Y_valTest[: Y_valTest.shape[0]/2], Y_valTest[Y_valTest.shape[0]/2: ])
+    return [(X_train, Y_train), (X_validate, Y_validate), (X_test, Y_test)]
 
 ###########################################
 ## All the functions for generating data ##
@@ -107,11 +127,11 @@ def decodeHouseNumbers(data, maxLen = 7):
 #############################################
 ## Save and load the model into/from files ##
 #############################################
-def save_model(model, path = 'trained/', prefix = "model_"):
+def save_model(model, path = 'trained/', prefix = "model_", optDrop=''):
     name = prefix+time.strftime("%d-%m-%Y_%I:%M:%S")
 
     # Save model
-    file = open(path+name+".json", "w+")
+    file = open(optDrop+path+name+".json", "w+")
     file.write(model.to_json())
     file.close()
 
